@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Game - Login</title>
+    <style>
+        /* Common styles for both login and game screens */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/736x/c8/3e/30/c83e302cff342ece660ed696cdabdeba.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: sans-serif;
+            color: #D50000;
+        }
+
+        /* Login and game card styling */
+        .card {
+            padding: 20px;
+            width: 300px;
+            border-radius: 6px;
+            border: 2px solid #D50000;
+            background: rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 15px rgba(213, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        /* Login form specific styles */
+        .login-form h2 {
+            margin-bottom: 20px;
+            color: #D6001E;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #D50000;
+            background-color: #333;
+            color: white;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, #D6001E, #ff4d4d);
+            color: white;
+            font-size: 16px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s, box-shadow 0.3s;
+            box-shadow: 0px 0px 15px rgba(214, 0, 30, 0.8);
+        }
+        .login-form button:active {
+            opacity: 0.6;
+        }
+        #login-message {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Game UI specific styles (hidden by default) */
+        #game-ui {
+            display: none; /* Initially hide the game UI */
+        }
+        .result-display {
+            display: flex;
+            width: 250px;
+            height: 250px;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 6px;
+            border: 5px solid #D50000;
+            background: transparent;
+            box-shadow: 0px 0px 20px rgba(213, 0, 0, 0.8);
+            margin-bottom: 20px;
+        }
+        #result {
+            font-size: 30px;
+            color: #D6001E;
+            font-weight: bold;
+            text-shadow: 0px 0px 10px rgba(214, 0, 30, 0.8);
+        }
+        #live-clock {
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #D50000;
+            text-shadow: 0px 0px 8px rgba(213, 0, 0, 0.8);
+        }
+        #startButton {
+            padding: 8px 15px;
+            background: linear-gradient(45deg, #D6001E, #ff4d4d);
+            color: white;
+            font-size: 12px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s, box-shadow 0.3s;
+            box-shadow: 0px 0px 15px rgba(214, 0, 30, 0.8);
+        }
+        #startButton:active {
+            opacity: 0.6;
+        }
+        #startButton:focus {
+            box-shadow: 0px 0px 25px rgba(214, 0, 30, 1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-ui" class="card login-form">
+        <h2>LOGIN</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">LOGIN</button>
+        </form>
+        <div id="login-message"></div>
+    </div>
+
+    <div id="game-ui" class="card">
+        <div class="result-display">
+            <span id="result">𝐆𝐄𝐓 𝐒𝐇𝐎𝐓𝐄</span>
+        </div>
+        <div id="live-clock">TextView</div>
+        <button id="startButton">START HACK</button>
+    </div>
+
+    <script>
+        // Store correct username and password
+        const CORRECT_USERNAME = 'RS';
+        const CORRECT_PASSWORD = 'RAYHAN_VIP';
+
+        // Get UI elements
+        const loginForm = document.getElementById('login-form');
+        const loginUI = document.getElementById('login-ui');
+        const gameUI = document.getElementById('game-ui');
+        const loginMessage = document.getElementById('login-message');
+
+        // Function to handle login
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+                // Hide login UI and show game UI
+                loginUI.style.display = 'none';
+                gameUI.style.display = 'block';
+
+                // Start the clock and set up the game logic
+                setupGame();
+            } else {
+                loginMessage.innerText = 'Incorrect username or password!';
+                loginMessage.style.color = '#ff4d4d';
+            }
+        });
+
+        // Function to set up the game UI and logic
+        function setupGame() {
+            // Live clock for textview
+            function updateClock() {
+                let now = new Date();
+                let formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+                document.getElementById('live-clock').innerText = formattedTime;
+            }
+            setInterval(updateClock, 1000);
+            updateClock(); // Initial call to set the clock
+
+            // Handle button click event
+            document.getElementById('startButton').addEventListener('click', function() {
+                let button = this;
+                let result = document.getElementById('result');
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+
+                button.style.display = 'none';
+                setTimeout(() => {
+                    button.style.display = 'block';
+                }, 35000);
+
+                result.innerText = "𝐀𝐓𝐓𝐀𝐂𝐊𝐈𝐍𝐆....";
+
+                setTimeout(() => {
+                    let randomNum = Math.floor(Math.random() * 10);
+                    let trend = randomNum < 5 ? "𝚂𝙼𝙰𝙻𝙻" : "𝙱𝙸𝙶";
+                    result.innerText = trend;
+                    console.log("Predicted trend:", trend);
+                }, 3500);
+            });
+        }
+    </script>
+</body>
+</html>
